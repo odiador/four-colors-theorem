@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teorema de los 4 Colores - JMAR, JMPC, SQU</title>
-  </head>
-  <body>
-    <div id="map" style="width: 100vw; height: 100vh;"></div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teorema de los 4 Colores</title>
+</head>
+
+<body style="background-color: #1d2228; color: white; font-family: Verdana, Geneva, Tahoma, sans-serif; margin: 0;">
+  <div
+    style="display: flex; flex-direction: column; gap: 0.5rem; padding: 2rem; justify-content: center; align-items: center;">
+    <h1 style="margin-top: 2rem; margin-bottom: 0;text-align: center;">Teorema de los 4 Colores</h1>
+    <p style="max-width: 48rem;">El teorema de los 4 colores establece que cualquier mapa plano dividido en regiones,
+      puede colorearse utilizando, como máximo, cuatro colores, de forma que ninguna región adyacente tenga el mismo
+      color.</p>
+    <h2 style="margin-top: 2rem; margin-bottom: 0;text-align: center;">Historia y relevancia</h2>
+    <p id="history" style="max-width: 48rem;">Propuesto inicialmente en 1852, el teorema fue formalmente probado en
+      1976 por Kenneth Appel y Wolfgang Haken, utilizando un enfoque computacional para verificar numerosos casos
+      posibles. Es uno de los primeros resultados matemáticos en depender significativamente de las computadoras para
+      su demostración. Este teorema es relevante en áreas como la teoría de grafos y cartografía.</p>
+
+    <h2 style="margin-top: 2rem; margin-bottom: 0;text-align: center;">Algoritmo de Welsh-Powell</h2>
+    <p style="max-width: 48rem;">Es una técnica utilizada para colorear grafos, siendo útil en la
+      aplicación del teorema de los 4 colores. Este algoritmo organiza los vértices (regiones del mapa) en orden
+      descendente según su grado (número de conexiones con otras regiones) y asigna colores a los vértices comenzando
+      por los más conectados.</p>
+    <h2>Aplicación al mapa de Colombia</h2>
+    <p style="max-width: 48rem;">Ahora, se va a mostrar la aplicación a este algoritmo tomando el mapa de Colombia
+      como ejemplo. Este mapa está dividido en departamentos y se desea colorear cada uno de estos, sin que hayan 2
+      departamentos vecinos (adyacentes) con el mismo color</p>
+    <p style="max-width: 48rem;">Para facilitar la obtención del grado de cada uno, se optó por adaptar un archivo que
+      contiene todas las regiones de los departamentos <a style="color: #00ffff;"
+        href="https://github.com/caticoa3/colombia_mapa/blob/master/co_2018_MGN_DPTO_POLITICO.geojson">(Geojson
+        original)</a>, añadiendole a cada departamento la propiedad "vecinos" que permitirá conocer tanto el grado y
+      los departamentos que son adyacentes a este
+      <a style="color: #00ffff;" href="departamentos.geojson">(Geojson adaptado)</a>.
+    </p>
+    <div style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 6rem;">
+      <h2 style="margin: 0;">Mapa de Colombia</h2>
+      <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Inicialmente se muestra el mapa de Colombia
+        sin pintar, de allí vamos a partir para pintar todo el mapa</p>
+      <div id="map0" style="width: 100%; height: 80vh;"></div>
+      <p id="infos1"></p>
+      <div id="map1" style="width: 100%; height: 80vh;"></div>
+      <p id="infos2"></p>
+      <div id="map2" style="width: 100%; height: 80vh;"></div>
+      <p id="infos3"></p>
+      <div id="map3" style="width: 100%; height: 80vh;"></div>
+      <p id="infos4"></p>
+      <div id="map4" style="width: 100%; height: 80vh;"></div>
+    </div>
     <script type="module" src="./main.js"></script>
-  </body>
+  </div>
+</body>
+
 </html>

@@ -88,17 +88,24 @@ const coloresDisponibles = ["#ff0000", "#00ff00", "#0000ff", "#ffff00"];
 
 function cargarMapa(num) {
   const coloresAsignados = colorearDepartamentos(departamentos.slice(), num);
+  let paintedNames = "";
   var departamentosLayer = new VectorLayer({
     source: new Vector({ features: departamentos }),
     style: (feature) => {
       // se usa el color que se calculo en el metodo de colorear
       const color = coloresAsignados[feature.get('id')];
+
+      if (num != 0) {
+        if (coloresDisponibles[num - 1] == color) {
+          paintedNames = paintedNames.concat(feature.get('properties')['DPTO_CNMBR']+", ");
+        }
+      }
       return departamentoStyle(color);
     },
   });
 
   const map = new Map({
-    target: 'map',
+    target: 'map' + num,
     layers: [
       // capa normal
       new TileLayer({
@@ -111,10 +118,15 @@ function cargarMapa(num) {
     view: new View({
       // ubica en colombia (no sirve si no se pone useGeographic() al inicio)
       center: [-74.24, 4.59],
-      zoom: 6,
+      zoom: 5,
     }),
   });
-
   departamentosLayer.setOpacity(0.5);
-  map.render('map');
+  map.render();
+  if (num != 0)
+    map.once("postrender", () => {
+      const result = paintedNames.substring(0, paintedNames.length - 2)
+      document.getElementById("infos" + num).innerHTML = result.concat(".").toLowerCase();
+    })
+
 }
