@@ -16,7 +16,7 @@
       -webkit-transition: color 100ms linear;
     }
   </style>
-  <script type="module" crossorigin src="/four-colors-theorem/assets/index-2YjTr3pX.js"></script>
+  <script type="module" crossorigin src="/four-colors-theorem/assets/index-2F8rBV9-.js"></script>
 </head>
 
 <body style="background-color: #1d2228; color: white; font-family: Verdana, Geneva, Tahoma, sans-serif; margin: 0;">
@@ -58,17 +58,21 @@
       <div id="map0" style="width: 100%; height: 80vh;"></div>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Para aplicar este algoritmo, inicialmente se
         debe de ordenar de mayor a menor grado cada uno de los departamentos</p>
-      <div id="sorting"></div>
+      <div id="sorting0"></div>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Luego, en ese orden, se elige un color <strong
           style="font-weight: normal; color: red;">(rojo)</strong> y se empieza a verificar si este departamento no ha
         sido pintato anteriormente y si no tiene vecinos con el mismo color a pintar (<strong
           style="font-weight: normal; color: red;">rojo </strong> en este caso)</p>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Si se cumple con estas condiciones, el
-        departamento se procede a pintar; este paso se ejecuta para cada uno de los departamentos.</p>
+        departamento se procede a pintar. Este paso se ejecuta para cada uno de los departamentos.</p>
       <div id="infos1"></div>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Como se puede observar, se completa la
         iteración y quedan algunos sin pintarse, estos se verificarán con el siguiente color</p>
       <div id="map1" style="width: 100%; height: 80vh;"></div>
+      <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Los departamentos pintados quedan de esta
+        manera:
+      </p>
+      <div id="sorting1"></div>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Ahora se elige el siguiente color <strong
           style="font-weight: normal; color: lime;">(verde)</strong> y como se hizo anteriormente, se pintan los que no
         se hayan pintado antes y los que no tengan vecinos ya pintados del color usado <strong
@@ -77,15 +81,27 @@
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Quedan faltando algunos por pintar, por lo que
         seguimos con el siguiente color</p>
       <div id="map2" style="width: 100%; height: 80vh;"></div>
+      <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Los departamentos pintados quedan de esta
+        manera:
+      </p>
+      <div id="sorting2"></div>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Ahora se continúa con el <strong
           style="font-weight: normal; color: blue;">azul</strong> y tendríamos algo parecido</p>
       <div id="infos3"></div>
       <div id="map3" style="width: 100%; height: 80vh;"></div>
+      <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Los departamentos pintados quedan de esta
+        manera:
+      </p>
+      <div id="sorting3"></div>
       <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Finalizamos con el <strong
           style="font-weight: normal; color: yellow;">amarillo</strong> y así tendríamos el mapa completamente pintado
       </p>
       <div id="infos4"></div>
       <div id="map4" style="width: 100%; height: 80vh;"></div>
+      <p style="margin-top: 1rem; margin-bottom: 1rem; max-width: 48rem;">Los departamentos pintados quedan de esta
+        manera:
+      </p>
+      <div id="sorting4"></div>
     </div>
     <a id="odiador" style="margin-top: 1rem;" href="https://github.com/odiador">Made with ♥️ by <strong>Juan Manuel
         Amador Roa</strong> </a>
