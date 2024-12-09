@@ -44,10 +44,8 @@ function departamentoStyle(color) {
   });
 }
 
-function colorearDepartamentos(departamentos, n) {
+function colorearDepartamentos(nuevosDeptos, n) {
   // ordena los nodos de mayor a menor grado
-  const nuevosDeptos = departamentos.sort((dept1, dept2) =>
-    dept2.get('vecinos').length - dept1.get('vecinos').length)
 
   const coloresAsignados = {};
   const infoDeptos = [];
@@ -67,7 +65,14 @@ function colorearDepartamentos(departamentos, n) {
 
         if (n - 1 == i) {
           const interfer = verificacion ? { depto: verificacion.interfer, color: verificacion.color } : undefined;
-          infoDeptos.push({ depto: depto.get("properties")["DPTO_CNMBR"], interfer })
+
+          infoDeptos.push({
+            depto: {
+              id: depto.get("id"),
+              name: depto.get("properties")["DPTO_CNMBR"],
+              vecinos: depto.get('vecinos').length,
+            }, interfer
+          })
         }
       }
     }
@@ -95,7 +100,9 @@ loadDepartamentos().then(() => {
 const coloresDisponibles = ["#ff0000", "#00ff00", "#0000ff", "#ffff00"];
 
 function cargarMapa(num) {
-  const { coloresAsignados, infoDeptos } = colorearDepartamentos(departamentos.slice(), num);
+  const nuevosDeptos = departamentos.slice().sort((dept1, dept2) =>
+    dept2.get('vecinos').length - dept1.get('vecinos').length)
+  const { coloresAsignados, infoDeptos } = colorearDepartamentos(nuevosDeptos, num);
   var departamentosLayer = new VectorLayer({
     source: new Vector({ features: departamentos }),
     style: (feature) => {
@@ -126,6 +133,29 @@ function cargarMapa(num) {
   map.render();
   if (num != 0)
     map.once("postrender", () => {
+      const ulsorting = document.createElement("ul");
+
+      ulsorting.style.textTransform = "capitalize";
+      document.getElementById("sorting" + num).appendChild(ulsorting);
+
+      for (let i = 0; i < nuevosDeptos.length; i++) {
+        const li = document.createElement("li");
+        li.style.color = coloresAsignados[nuevosDeptos[i].get('id')]
+        li.innerHTML = nuevosDeptos[i].get('properties')['DPTO_CNMBR'] + ` <span style="color: white">(${nuevosDeptos[i].get('vecinos').length})</span>`;
+        ulsorting.appendChild(li);
+      }
+      if (num == 1) {
+        const ulsorting = document.createElement("ul");
+
+        ulsorting.style.textTransform = "capitalize";
+        document.getElementById("sorting0").appendChild(ulsorting);
+
+        for (let i = 0; i < nuevosDeptos.length; i++) {
+          const li = document.createElement("li");
+          li.innerHTML = nuevosDeptos[i].get('properties')['DPTO_CNMBR'] + ` (${nuevosDeptos[i].get('vecinos').length})`;
+          ulsorting.appendChild(li);
+        }
+      }
       const ul = document.createElement("ul");
 
       ul.style.textTransform = "capitalize";
@@ -133,7 +163,7 @@ function cargarMapa(num) {
 
       for (let i = 0; i < infoDeptos.length; i++) {
         const li = document.createElement("li");
-        li.innerHTML = infoDeptos[i].depto + (infoDeptos[i].interfer ? `<strong style="font-weight: normal; color: ${infoDeptos[i].interfer.color}"> (${infoDeptos[i].interfer.depto})</strong>` : "");
+        li.innerHTML = infoDeptos[i].depto.name + (infoDeptos[i].interfer ? `<strong style="font-weight: normal; color: ${infoDeptos[i].interfer.color}"> (${infoDeptos[i].interfer.depto})</strong>` : "");
         if (!infoDeptos[i].interfer)
           li.style.color = coloresDisponibles[num - 1];
         ul.appendChild(li);
