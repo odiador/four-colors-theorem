@@ -50,6 +50,7 @@ function colorearDepartamentos(departamentos, n) {
     dept2.get('vecinos').length - dept1.get('vecinos').length)
 
   const coloresAsignados = {};
+  const infoDeptos = [];
 
   // recorre n veces por diferentes colores para pintar el mapa completo
   for (let i = 0; i < n; i++) {
@@ -58,13 +59,20 @@ function colorearDepartamentos(departamentos, n) {
     for (let index = 0; index < nuevosDeptos.length; index++) {
       const depto = nuevosDeptos[index];
       // si no se encuentra asignado el color con el id del depto y los vecinos no tienen el color seleccionado
-      if (!coloresAsignados[depto.get('id')] && verificarVecinos(depto, coloresAsignados, coloresDisponibles[i])) {
+      if (!coloresAsignados[depto.get('id')]) {
         // se asigna el color
-        coloresAsignados[depto.get('id')] = coloresDisponibles[i];
+        const verificacion = verificarVecinos(depto, coloresAsignados, coloresDisponibles[i]);
+        if (!verificacion)
+          coloresAsignados[depto.get('id')] = coloresDisponibles[i];
+
+        if (n - 1 == i) {
+          const interfer = verificacion ? { depto: verificacion.interfer, color: verificacion.color } : undefined;
+          infoDeptos.push({ depto: depto.get("properties")["DPTO_CNMBR"], interfer })
+        }
       }
     }
   }
-  return coloresAsignados;
+  return { coloresAsignados, infoDeptos };
 }
 // verifica si hay vecinos con el mismo color que el departamento
 function verificarVecinos(depto, coloresAsign, color) {
@@ -73,9 +81,9 @@ function verificarVecinos(depto, coloresAsign, color) {
     const otroDepto = departamentos.find(depto => depto.get('properties')['DPTO_CNMBR'] == vecinos[index]);
     // retorna false si se encuentra un vecino con el mismo color que se busca
     if (otroDepto && color == coloresAsign[otroDepto.get('id')])
-      return false;
+      return { interfer: otroDepto.get('properties')['DPTO_CNMBR'], color: coloresAsign[otroDepto.get('id')] };
   }
-  return true;
+  return undefined;
 }
 loadDepartamentos().then(() => {
   for (let i = 0; i < 5; i++)
@@ -87,19 +95,12 @@ loadDepartamentos().then(() => {
 const coloresDisponibles = ["#ff0000", "#00ff00", "#0000ff", "#ffff00"];
 
 function cargarMapa(num) {
-  const coloresAsignados = colorearDepartamentos(departamentos.slice(), num);
-  let paintedNames = "";
+  const { coloresAsignados, infoDeptos } = colorearDepartamentos(departamentos.slice(), num);
   var departamentosLayer = new VectorLayer({
     source: new Vector({ features: departamentos }),
     style: (feature) => {
       // se usa el color que se calculo en el metodo de colorear
       const color = coloresAsignados[feature.get('id')];
-
-      if (num != 0) {
-        if (coloresDisponibles[num - 1] == color) {
-          paintedNames = paintedNames.concat(feature.get('properties')['DPTO_CNMBR']+", ");
-        }
-      }
       return departamentoStyle(color);
     },
   });
@@ -125,8 +126,18 @@ function cargarMapa(num) {
   map.render();
   if (num != 0)
     map.once("postrender", () => {
-      const result = paintedNames.substring(0, paintedNames.length - 2)
-      document.getElementById("infos" + num).innerHTML = result.concat(".").toLowerCase();
+      const ul = document.createElement("ul");
+
+      ul.style.textTransform = "capitalize";
+      document.getElementById("infos" + num).appendChild(ul);
+
+      for (let i = 0; i < infoDeptos.length; i++) {
+        const li = document.createElement("li");
+        li.innerHTML = infoDeptos[i].depto + (infoDeptos[i].interfer ? `<strong style="font-weight: normal; color: ${infoDeptos[i].interfer.color}"> (${infoDeptos[i].interfer.depto})</strong>` : "");
+        if (!infoDeptos[i].interfer)
+          li.style.color = coloresDisponibles[num - 1];
+        ul.appendChild(li);
+      }
     })
 
 }
